@@ -96,19 +96,19 @@ if a=='KNN':
                 st.header("Heatmap")
                 st.write(fig)
             
-            check3 = st.checkbox("SwarmPlot")
-            if check3:
-                fig = plt.figure(figsize=(10, 5))
-                sns.swarmplot(y_test,y_pred)
-                st.header("Swarmplot")
-                st.pyplot(fig)
+#             check3 = st.checkbox("SwarmPlot")
+#             if check3:
+#                 fig = plt.figure(figsize=(10, 5))
+#                 sns.swarmplot(y_test,y_pred)
+#                 st.header("Swarmplot")
+#                 st.pyplot(fig)
 
-            check4 = st.checkbox("StripPlot")
-            if check4:
-                fig = plt.figure(figsize=(10, 8))
-                seaborn.stripplot(data=data, size=3, edgecolor='blue')
-                st.header("Stripplot")
-                st.pyplot(fig)
+#             check4 = st.checkbox("StripPlot")
+#             if check4:
+#                 fig = plt.figure(figsize=(10, 8))
+#                 seaborn.stripplot(data=data, size=3, edgecolor='blue')
+#                 st.header("Stripplot")
+#                 st.pyplot(fig)
             check5 = st.checkbox("KNN-Visualization")
             if check5:
                 knn = KNeighborsClassifier(n_neighbors=nn,weights=weights)
