@@ -140,7 +140,7 @@ if a=='KMean':
 
         if df_display:
             st.write(df)
-        numerics = ['int16', 'int32', 'int64']
+        numerics = ['int16', 'int32', 'int64','float32','float64']
         df = df.select_dtypes(include=numerics)
         option1 = st.selectbox(
             'Select parameter 1: ',df.columns)
