@@ -19,6 +19,29 @@ import seaborn
 a=st.selectbox('Pick one', ['KMean', 'KNN'])
 
 if a=='KNN':
+    from tkinter.tix import Meter
+from turtle import color
+import streamlit as st
+import numpy as np
+import pandas as pd
+from sklearn.metrics import r2_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+import matplotlib.pyplot as plt
+from sklearn import metrics
+import seaborn as sns
+import plotly.express as px
+import plotly.graph_objects as qo
+from sklearn import datasets, neighbors
+from mlxtend.plotting import plot_decision_regions
+import json
+from urllib.request import urlopen
+import seaborn
+from sklearn.decomposition import PCA
+
+
+def app():
     st.title("KNN")
     uploaded_file = st.file_uploader(label="Upload CSV file",type=['csv','xlsx'])
 
@@ -43,13 +66,6 @@ if a=='KNN':
             for i in category_cols:
                 if df[i].isnull().sum().all()== True:
                     df[i]=df[i].fillna(df[i].mode()[0])
-
-            # label_encoder object knows how to understand word labels.
-            label_encoder = preprocessing.LabelEncoder()
-            # Encode labels in column 'species'.
-            for i in category_cols:
-                df[i]= label_encoder.fit_transform(df[i])
-
             for i in df.columns:
                 if df[i].isnull().sum().all()==True:
                     df = df.dropna()
@@ -61,13 +77,13 @@ if a=='KNN':
         uploaded_file=file.to_csv('file1.csv')
         data = pd.read_csv('file1.csv')
         st.header("Dataset")
-        max_rows = len(data)
-        st.write("Total number of rows in this dataset is-", max_rows)
-        a1=st.number_input('Pick a number of rows', 0, max_rows)
+        
+        st.write("Data set contains "+ str(data.shape[0]) +" rows")
+        st.write("Data set contains "+ str(data.shape[1]) +" columns")
+        a1=st.number_input('Pick a number of rows to see', 0,data.shape[0]+1 )
         if a1>=1:
             st.dataframe(data.head(a1))
             list1=[]  
-            data.drop(data.columns[data.columns.str.contains('unnamed',case = False)],axis = 1, inplace = True)
             for i in data.columns:
                 list1.append(i)
             target=st.selectbox("What is the target column?",(list1))
@@ -105,23 +121,25 @@ if a=='KNN':
                 sns.heatmap(data.corr(), ax=ax)
                 st.header("Heatmap")
                 st.write(fig)
-
-            check3 = st.checkbox("KNN-Visualization")
-            if check3:
-                knn = KNeighborsClassifier(n_neighbors=nn,weights=weights)
+            
+            check5 = st.checkbox("KNN-Visualization")
+            if check5:
                 column1=st.selectbox("What is the  column1 to be used for visualization?",(list1))
                 column2=st.selectbox("What is the  column2 to be used for visualization?",(list1))
                 if column1!=column2:
                     x = data[[column1,column2]].values
-                    y1=data[target]
-
-                    y = data[target].astype(int).values
-
+                    data[target] = data[target].astype('category')
+                    data['Types_cat'] = data[target].cat.codes
+                    labelencoder = LabelEncoder()
+                    data['Types_Cat'] = labelencoder.fit_transform(data[target])
+                    
+                    y = data['Types_Cat'].astype(int).values
+                    
                     knn.fit(x,y)
                     fig=plt.figure(figsize=(10, 5))
                     plot_decision_regions(x, y, clf=knn, legend=2)
-                    plt.xlabel(column1)
-                    plt.ylabel(column2)
+                    plt.xlabel(column2)
+                    plt.ylabel(column1)
                     st.pyplot(fig)
 
 if a=='KMean':
