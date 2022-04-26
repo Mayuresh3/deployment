@@ -11,6 +11,7 @@ import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as qo
 from sklearn import datasets, neighbors
+from sklearn.preprocessing import LabelEncoder
 from mlxtend.plotting import plot_decision_regions
 import json
 from urllib.request import urlopen
